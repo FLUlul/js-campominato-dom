@@ -71,42 +71,36 @@ const mediumBtn = document.getElementById("medium-btn");
 const hardBtn = document.getElementById("hard-btn");
 const resetBtn = document.getElementById("reset-btn");
 
+const easy = 100;
+const medium = 81;
+const hard = 49;
+
+
+
 easyBtn.addEventListener("click",
     function(){
-        let easy = 100;
-        let cicleEasy = generateSquares(easy, "sqr-easy");
-        let randomEasy = uniqueNumberGenerator (16, easy);
-        console.log(uniqueNumberGenerator (16, easy));
+        generateSquares(easy, "sqr-easy");
 
         easyBtn.classList.add("active");
-        buttonDisable (easyBtn, mediumBtn, hardBtn);
-        
+        buttonDisable (easyBtn, mediumBtn, hardBtn);  
     }
 );
 
 mediumBtn.addEventListener("click",
     function(){
-        let medium = 81;
-        let cicleMedium = generateSquares(medium, "sqr-medium");
-        let randomMedium = uniqueNumberGenerator (16, medium);
-        console.log(uniqueNumberGenerator (16, medium));
+        generateSquares(medium, "sqr-medium");
 
         mediumBtn.classList.add("active");
-        buttonDisable (easyBtn, mediumBtn, hardBtn);
-        
+        buttonDisable (easyBtn, mediumBtn, hardBtn);    
     }
 );
 
 hardBtn.addEventListener("click",
     function(){
-        let hard = 49;
-        let cicleHard = generateSquares(hard, "sqr-hard");
-        let randomHard = uniqueNumberGenerator (16, hard);
-        console.log(uniqueNumberGenerator (16, hard));
-
+        generateSquares(hard, "sqr-hard");
+        
         hardBtn.classList.add("active");
         buttonDisable (easyBtn, mediumBtn, hardBtn);
-        return randomHard;
     }
 );
 
@@ -118,6 +112,56 @@ resetBtn.addEventListener("click",
 
 
 
+function generateSquares(maxCicles, defaultClass){
+    randomEasy = uniqueNumberGenerator (16, easy);
+    randomMedium = uniqueNumberGenerator (16, medium);
+    randomHard = uniqueNumberGenerator (16, hard);
+    
+
+    for(i=1; i<=maxCicles; i++){
+        let eleDiv = elementGenerator("div", defaultClass);
+        let eleSpan = elementGenerator("span", "dnone");
+        sqrCont.append(eleDiv);
+        eleDiv.append(eleSpan);
+        eleSpan.append(i);
+        eleDiv.setAttribute("id", i);
+        
+/*         if(randomEasy.includes(i)){
+            eleDiv.classList.add("sqr-bomb");
+        }
+
+        else if(randomMedium.includes(i)){
+            eleDiv.classList.add("sqr-bomb");
+        }
+
+        else if(randomHard.includes(i)){
+            eleDiv.classList.add("sqr-bomb");
+        } */
+        
+        eleDiv.addEventListener("click",
+            function(){
+                eleDiv.classList.add("active");
+                eleSpan.classList.remove("dnone");
+                let idBomb = parseInt(eleDiv.id);
+
+                if(randomEasy.includes(idBomb)){
+                    eleDiv.classList.add("sqr-bomb");
+                    eleDiv.classList.remove("active");
+                }
+                if(randomMedium.includes(idBomb)){
+                    eleDiv.classList.add("sqr-bomb");
+                    eleDiv.classList.remove("active");
+                }
+                if(randomHard.includes(idBomb)){
+                    eleDiv.classList.add("sqr-bomb");
+                    eleDiv.classList.remove("active");
+                }
+                console.log(idBomb);
+            }
+        );
+        
+    }
+}
 
 function uniqueNumberGenerator (maxHarrayNumber, maxRandomNumber){
     let arrNum = [];
@@ -130,38 +174,14 @@ function uniqueNumberGenerator (maxHarrayNumber, maxRandomNumber){
     return arrNum;
 }
 
-
-function buttonDisable (buttonOne, buttonTwo, buttonThree){
-    buttonOne.setAttribute("disabled", "");
-    buttonTwo.setAttribute("disabled", "");
-    buttonThree.setAttribute("disabled", "");
-}
-
-function generateSquares(maxCicles, defaultClass){
-    for(i=1; i<=maxCicles; i++){
-        let eleDiv = elementGenerator("div", defaultClass);
-        let eleSpan = elementGenerator("span", "dnone");
-        sqrCont.append(eleDiv);
-        eleDiv.append(eleSpan);
-        eleSpan.append(i);
-        /* console.log(eleDiv); */
-
-        eleDiv.addEventListener("click",
-            function(){
-                eleDiv.classList.add("active");
-                eleSpan.classList.remove("dnone");
-                /* console.log(eleDiv); */
-                if (randomHard === i){
-                    eleDiv.classList.add("sqr-bomb");
-                }
-            }
-        );
-    }
-}
-
 function elementGenerator(element, className){
     let item = document.createElement(element);
     item.classList.add(className);
     return item;
 }
 
+function buttonDisable (buttonOne, buttonTwo, buttonThree){
+    buttonOne.setAttribute("disabled", "");
+    buttonTwo.setAttribute("disabled", "");
+    buttonThree.setAttribute("disabled", "");
+}
