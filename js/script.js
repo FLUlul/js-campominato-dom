@@ -75,10 +75,14 @@ const easy = 100;
 const medium = 81;
 const hard = 49;
 
+let verify = false;
+let count = 0;
 
+let bombs = [];
 
 easyBtn.addEventListener("click",
     function(){
+        bombs = createBombs(easy);
         generateSquares(easy, "sqr-easy");
 
         easyBtn.classList.add("active");
@@ -88,6 +92,7 @@ easyBtn.addEventListener("click",
 
 mediumBtn.addEventListener("click",
     function(){
+        bombs = createBombs(medium);
         generateSquares(medium, "sqr-medium");
 
         mediumBtn.classList.add("active");
@@ -97,6 +102,7 @@ mediumBtn.addEventListener("click",
 
 hardBtn.addEventListener("click",
     function(){
+        bombs = createBombs(hard);
         generateSquares(hard, "sqr-hard");
         
         hardBtn.classList.add("active");
@@ -113,11 +119,8 @@ resetBtn.addEventListener("click",
 
 
 function generateSquares(maxCicles, defaultClass){
-    randomEasy = uniqueNumberGenerator (16, easy);
-    randomMedium = uniqueNumberGenerator (16, medium);
-    randomHard = uniqueNumberGenerator (16, hard);
     
-
+    console.log(bombs);
     for(i=1; i<=maxCicles; i++){
         let eleDiv = elementGenerator("div", defaultClass);
         let eleSpan = elementGenerator("span", "dnone");
@@ -126,51 +129,42 @@ function generateSquares(maxCicles, defaultClass){
         eleSpan.append(i);
         eleDiv.setAttribute("id", i);
         
-/*         if(randomEasy.includes(i)){
-            eleDiv.classList.add("sqr-bomb");
-        }
 
-        else if(randomMedium.includes(i)){
-            eleDiv.classList.add("sqr-bomb");
-        }
 
-        else if(randomHard.includes(i)){
-            eleDiv.classList.add("sqr-bomb");
-        } */
-        
         eleDiv.addEventListener("click",
             function(){
                 eleDiv.classList.add("active");
                 eleSpan.classList.remove("dnone");
                 let idBomb = parseInt(eleDiv.id);
 
-                if(randomEasy.includes(idBomb)){
+                
+                if(bombs.includes(idBomb)){
                     eleDiv.classList.add("sqr-bomb");
                     eleDiv.classList.remove("active");
+                    alert(`YOU LOST, your score is: ${count}. Press RESET to try again`);
+                    verify = true;
+                    console.log(verify);
+                }else{
+                    count++;
+                    console.log(count);
                 }
-                if(randomMedium.includes(idBomb)){
-                    eleDiv.classList.add("sqr-bomb");
-                    eleDiv.classList.remove("active");
-                }
-                if(randomHard.includes(idBomb)){
-                    eleDiv.classList.add("sqr-bomb");
-                    eleDiv.classList.remove("active");
-                }
-                console.log(idBomb);
             }
         );
-        
+/*         if(bombs.includes(i)){
+            eleDiv.classList.add("sqr-bomb");
+        } */
     }
 }
 
-function uniqueNumberGenerator (maxHarrayNumber, maxRandomNumber){
+function createBombs (max) {
     let arrNum = [];
-    while (arrNum.length<maxHarrayNumber){
-        let randNum = Math.floor(Math.random()*maxRandomNumber + 1);
-        if(arrNum.includes(randNum) !== true){ 
+    while (arrNum.length < 16) {
+        let randNum = Math.floor(Math.random() * max + 1);
+        if (arrNum.includes(randNum) !== true) { 
             arrNum.push(randNum);
         }
     }
+
     return arrNum;
 }
 
